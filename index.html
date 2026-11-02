@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>For My Jazz Lover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            background-color: #0d0d14; 
+            color: #e0e0e0; 
+            font-family: 'Great Vibes', 'Ma Shan Zheng', cursive, sans-serif; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0d0d14 100%); 
+        }
+
+        /* 页面切换容器 */
+        .page-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease;
+            opacity: 0;
+            pointer-events: none; 
+        }
+
+        .page-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ================= 第一页：黑胶唱片 ================= */
+        .vinyl { 
+            width: 280px; 
+            height: 280px; 
+            background: radial-gradient(circle, #333 20%, #111 30%, #000 40%, #222 50%, #000 60%, #111 70%, #000 80%, #222 90%, #000 100%); 
+            border-radius: 50%; 
+            margin-bottom: 30px; 
+            border: 4px solid #222; 
+            box-shadow: 0 0 40px rgba(138, 43, 226, 0.5), inset 0 0 20px rgba(0,0,0,0.8); 
+            position: relative; 
+            animation: spin 4s linear infinite; 
+            animation-play-state: paused; 
+            cursor: pointer; 
+            transition: box-shadow 0.3s ease, transform 0.3s ease; 
+        }
+        
+        .vinyl:hover { 
+            box-shadow: 0 0 60px rgba(243, 217, 164, 0.7); 
+            transform: scale(1.02);
+        }
+
+        .center-cover {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 3px solid #000;
+            box-shadow: 0 0 10px rgba(0,0,0,0.8);
+            overflow: hidden;
+            pointer-events: none; 
+            background-color: #222; 
+        }
+
+        .center-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        @keyframes spin { 
+            0% { transform: rotate(0deg); } 
+            100% { transform: rotate(360deg); } 
+        }
+
+        .title { font-size: 56px; margin-bottom: 10px; color: #f3d9a4; text-shadow: 0 0 20px rgba(243, 217, 164, 0.6); }
+        .subtitle { font-size: 24px; color: #b5a89a; letter-spacing: 2px; margin-bottom: 20px; }
+
+        .magic-item {
+            font-size: 40px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.5s ease;
+            position: absolute;
+            user-select: none;
+            filter: drop-shadow(0 0 10px #ff007f);
+        }
+        .magic-item.show { opacity: 1; }
+        .magic-item:hover { transform: scale(1.3) rotate(15deg); }
+
+        #item1 { top: 20%; left: 20%; }
+        #item2 { top: 70%; right: 20%; }
+        #item3 { top: 30%; right: 30%; }
+
+        /* 统一的返回按钮 */
+        .btn-back {
+            margin-top: 30px; 
+            padding: 10px 25px; 
+            background: transparent; 
+            color: #b5a89a; 
+            border: 1px solid #b5a89a; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-family: 'Ma Shan Zheng', cursive;
+            transition: all 0.3s ease;
+        }
+        .btn-back:hover { background: #b5a89a; color: #111; }
+
+        /* ================= 第二页：灵魂共鸣卡牌 ================= */
+        .soul-game-container {
+            text-align: center;
+            max-width: 800px;
+            padding: 30px;
+        }
+
+        .soul-game-container h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 48px;
+            margin: 0 0 10px 0;
+            color: #f3d9a4;
+            text-shadow: 0 0 15px rgba(243, 217, 164, 0.5);
+        }
+
+        .soul-game-container p {
+            font-family: 'Ma Shan Zheng', cursive;
+            color: #b5a89a;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        /* 卡牌容器 */
+        .cards-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* 独立卡牌 */
+        .word-card {
+            width: 100px;
+            height: 140px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            user-select: none;
+        }
+
+        .word-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* 点对时的发光效果 */
+        .word-card.correct {
+            color: #fff;
+            background: linear-gradient(45deg, #ff007f, #8a2be2);
+            box-shadow: 0 0 20px rgba(138, 43, 226, 0.8);
+            border-color: transparent;
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        /* 点错时的震动效果 */
+        .word-card.error {
+            animation: shake 0.4s;
+            border-color: red;
+            color: red;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* ================= 第三页：情书 ================= */
+        .letter-box {
+            background: rgba(20, 20, 30, 0.8);
+            border: 1px solid rgba(243, 217, 164, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 80%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            text-align: left; 
+            font-size: 22px; 
+            line-height: 1.8;
+            color: #f0e6d2;
+        }
+
+        .letter-box h1 {
+            color: #ffd700;
+            font-size: 48px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center; 
+        }
+        
+        .letter-box p { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- 第一首歌：首页背景音乐 -->
+    <audio id="bgMusic1" src="music1.mp3" loop></audio>
+    <!-- 第二首歌：第二页的音乐 -->
+    <audio id="bgMusic2" src="music2.mp3" loop></audio>
+
+    <!-- ================= 第一页：唱片 ================= -->
+    <div class="page-container active" id="page1">
+        <div class="vinyl" id="myVinyl" title="点击播放音乐">
+            <div class="center-cover">
+                <img src="cover.jpg" alt="cover" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="title">Happy Birthday</div>
+        <div class="subtitle">To My Favorite Jazz Lover</div>
+
+        <div class="magic-item" id="item1" onclick="goToPage(2)">🎷</div>
+        <div class="magic-item" id="item2" onclick="goToPage(2)">🎵</div>
+        <div class="magic-item" id="item3" onclick="goToPage(2)">🥂</div>
+    </div>
+
+    <!-- ================= 第二页：歌曲拼图小游戏 ================= -->
+    <div class="page-container" id="page2">
+        <div class="soul-game-container">
+            <h2>From One Soul to Another</h2>
+            <p>请按照歌名的顺序，依次点亮灵魂碎片</p>
+            
+            <!-- 打乱顺序的5张卡牌 -->
+            <div class="cards-wrapper" id="cardsWrapper">
+                <!-- data-order 表示正确顺序 -->
+                <div class="word-card" data-order="3">Soul</div>
+                <div class="word-card" data-order="1">From</div>
+                <div class="word-card" data-order="5">Another</div>
+                <div class="word-card" data-order="2">One</div>
+                <div class="word-card" data-order="4">To</div>
+            </div>
+        </div>
+        <button class="btn-back" onclick="goToPage(1)">← </button>
+    </div>
+
+    <!-- ================= 第三页：最终情书 ================= -->
+    <div class="page-container" id="page3">
+        <div class="letter-box">
+            <h1>To My Dearest</h1>
+            <p>或许你不happy你的出生</p>
+            <p>但我happy你的存在</p>
+            <p>有点自私</p>
+            <p>不过当你拼凑出这首歌的名字</p>
+            <p>就像我们从不同的灵魂走向了彼此</p>
+            <p>你的波涛和巨浪已全部从我身边涌来</p>
+            <!-- <img src="photo.jpg" style="width: 100%; border-radius: 10px; margin: 20px 0;"> -->
+            <p style="text-align: right; margin-top: 30px;"> 🦋</p>
+        </div>
+        <button class="btn-back" onclick="goToPage(2)">← </button>
+    </div>
+
+    <script>
+        const vinyl = document.getElementById('myVinyl');
+        const bgMusic1 = document.getElementById('bgMusic1');
+        const bgMusic2 = document.getElementById('bgMusic2');
+        const items = document.querySelectorAll('.magic-item');
+        let isPlaying = false;
+
+        // 1. 点击唱片
+        vinyl.addEventListener('click', () => {
+            if (!isPlaying) {
+                isPlaying = true;
+                vinyl.style.animationPlayState = 'running';
+                bgMusic1.play().catch(error => console.log("自动播放被拦截"));
+                items.forEach(item => item.classList.add('show'));
+            }
+        });
+
+        // 2. 页面切换逻辑（带音乐控制）
+        function goToPage(pageNumber) {
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('page' + pageNumber).classList.add('active');
+            
+            if (pageNumber === 1) {
+                bgMusic2.pause();
+                if (isPlaying) bgMusic1.play();
+            } 
+            else if (pageNumber === 2) {
+                bgMusic1.pause();
+                // 尝试播放第二首歌（如果浏览器拦截，需要用户手动点一下屏幕）
+                bgMusic2.play().catch(error => console.log("需要点击页面才能播放第二首歌"));
+                resetPuzzle();
+            } 
+            else if (pageNumber === 3) {
+                // 进入第三页时，第二首歌继续作为背景音
+            }
+        }
+
+        /* ================= 灵魂拼图逻辑 ================= */
+        let currentStep = 1; 
+        const cards = document.querySelectorAll('.word-card');
+        // 初始时打乱卡牌视觉效果（可选，代码里已经手工打乱顺序了）
+        
+        cards.forEach(card => {
+            card.addEventListener('click', function() {
+                const order = parseInt(this.getAttribute('data-order'));
+
+                // 如果点对了
+                if (order === currentStep) {
+                    this.classList.add('correct');
+                    currentStep++;
+
+                    if (currentStep > 5) {
+                        setTimeout(() => {
+                            goToPage(3); // 拼图完成，进入情书
+                        }, 800);
+                    }
+                } else {
+                    // 如果点错了
+                    this.classList.add('error');
+                    setTimeout(() => {
+                        this.classList.remove('error');
+                        // 重置游戏
+                        currentStep = 1;
+                        cards.forEach(c => c.classList.remove('correct'));
+                    }, 500);
+                }
+            });
+        });
+
+        function resetPuzzle() {
+            currentStep = 1;
+            cards.forEach(c => c.classList.remove('correct'));
+        }
+    </script>
+</body>
+</html>
