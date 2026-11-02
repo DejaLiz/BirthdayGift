@@ -220,6 +220,32 @@
         }
         
         .letter-box p { margin-bottom: 15px; }
+                /* ================= 手机端专属适配 ================= */
+        @media (max-width: 768px) {
+            .title { font-size: 40px; } 
+            .subtitle { font-size: 18px; }
+            
+            .vinyl { width: 220px; height: 220px; }
+            .center-cover { width: 85px; height: 85px; }
+            
+            #item1 { top: 15%; left: 10%; }
+            #item2 { top: 80%; right: 10%; }
+            #item3 { top: 25%; right: 15%; }
+            .magic-item { font-size: 32px; }
+
+            .soul-game-container h2 { font-size: 32px; }
+            .cards-wrapper { gap: 8px; }
+            .word-card { width: 60px; height: 90px; font-size: 14px; }
+
+            .letter-box {
+                width: 90%;
+                padding: 25px 20px;
+                font-size: 16px; 
+            }
+            .letter-box h1 { font-size: 32px; }
+            
+            .btn-back { font-size: 14px; padding: 8px 16px; }
+        }
     </style>
 </head>
 <body>
